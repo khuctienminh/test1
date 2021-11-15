@@ -1,0 +1,1 @@
+web: gunicorn ryokou_taro.wsgi

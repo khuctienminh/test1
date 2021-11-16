@@ -19,7 +19,7 @@ class IndexView(generic.TemplateView):
 class InquiryView(generic.FormView):
     template_name = "inquiry.html"
     form_class = InquiryForm
-    success_url = reverse_lazy('diary:inquiry')
+    success_url = reverse_lazy('taro:inquiry')
 
     def form_valid(self,form):
         form.send_email()
@@ -30,7 +30,7 @@ class InquiryView(generic.FormView):
 class InquiryView1(generic.FormView):
     template_name = "inquiry.html"
     form_class = InquiryForm1
-    success_url = reverse_lazy('diary:inquiry1')
+    success_url = reverse_lazy('taro:inquiry1')
 
     def form_valid(self,form):
         form.send_email()
@@ -41,7 +41,7 @@ class InquiryView1(generic.FormView):
 class InquiryView2(generic.FormView):
     template_name = "inquiry.html"
     form_class = InquiryForm2
-    success_url = reverse_lazy('diary:inquiry2')
+    success_url = reverse_lazy('taro:inquiry2')
 
     def form_valid(self,form):
         form.send_email()

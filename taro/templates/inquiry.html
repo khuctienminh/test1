@@ -4,20 +4,6 @@
 
 {% block active_inquiry %}active{% endblock %}
 
-{% block header%}
-<header class="masthead" style="background-image: url('/static/assets/img/home-bg.jpg')">
-    <div class="container position-relative px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="site-heading">
-                    <h1>Clean Blog</h1>
-                    <span class="subheading">A Blog Theme by Start Bootstrap</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-{% endblock %}
 
 {% block contents %}
 <!-- Main Content-->
@@ -25,12 +11,17 @@
 <main class="mb-4">
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as possible!</p>
+            <div class="col-md-11 col-lg-9 col-xl-9">
+                <div class="chinhthu">
+                    <h1>お問い合わせフォーム</h1>
+                    <p>※下記フォームに必要事項を入力後、確認ボタンを押してください
+                    </p>
+                </div>
+                <div class="btn-buttt">
                 <a href="{% url 'taro:inquiry' %}" class="csw-btn-button" rel="nofollow" target="_self" >Form</a>
                 <a href="{% url 'taro:inquiry1' %}" class="csw-btn-button" rel="nofollow" target="_self" >Form1</a>
                 <a href="{% url 'taro:inquiry2' %}" class="csw-btn-button" rel="nofollow" target="_self" >Form2</a>
-                <h1></h1>
+                </div>
                 <div class="my-div-style">
                     <form method="post">
                         {% csrf_token %}
@@ -41,16 +32,19 @@
                           <div class="form-group row">
                               <label for="{{field.id_for_label }}"
                               class="col-sm-4 col-form-label">
-                            <strong>{{ field.label_tag }}</strong></label>
+                            <strong>{{ field.label_tag }}{% if field.id_for_label != 'id_phone' %}
+                                <span style="color: red;">※必須</span> 
+                                {% endif %}</strong></label>
                             <div class="col-sm-8">
                                 {{ field }}
                                 {{ field.errors}}
                             </div>
                           </div>
+                          
                         {% endfor %}
         
                         <div class="offset-sm-4 col-sm-8">
-                            <button class="btn btn-primary" type="submit">送信</button>
+                            <button class="but1" style="background-color: dodgerblue; margin-left: 8px;" type="submit">送信</button>
                         </div>
                     </form>
                 </div>

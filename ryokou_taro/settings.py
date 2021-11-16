@@ -129,4 +129,7 @@ STATICFILES_DIRS = (
 )
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 django_heroku.settings(locals())

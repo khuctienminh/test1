@@ -4,7 +4,12 @@
 
 {% block active_inquiry %}active{% endblock %}
 
-
+{% block header%}
+<header class="masthead" src="{% static 'assets/img/touroku.png' %}">
+    <div class="container position-relative px-4 px-lg-5">
+    </div>
+</header>
+{% endblock %}
 {% block contents %}
 <!-- Main Content-->
 
@@ -14,8 +19,8 @@
             <div class="col-md-11 col-lg-9 col-xl-9">
                 <div class="chinhthu">
                     <h1>お問い合わせフォーム</h1>
-                    <p>※下記フォームに必要事項を入力後、確認ボタンを押してください
-                    </p>
+                    <h6>※下記フォームに必要事項を入力後、確認ボタンを押してください
+                    </h6>
                 </div>
                 <div class="btn-buttt">
                 <a href="{% url 'taro:inquiry' %}" class="csw-btn-button" rel="nofollow" target="_self" >Form</a>

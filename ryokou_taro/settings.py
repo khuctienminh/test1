@@ -190,14 +190,15 @@ DATABASES = {
         #'USER':os.environ.get('DB_USER'),
         #'PASSWORD':os.environ.get('DB_PASSWORD'),
         'USER':'postgres',
-        'PASSWORD':'minh0986121168',
+        'PASSWORD':'2035145',
         'HOST':'',
         'PORT':'',
     }
 }
+#khi up len mang thi phai them cai nay
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# import dj_database_url
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定
 SITE_ID = 1

@@ -73,6 +73,8 @@ class UserInfoView(LoginRequiredMixin,generic.DetailView):
     model = CustomUser
     template_name = "userinfomation.html"
 
+
+
 class TopView(generic.TemplateView):
   template_name = 'top.html'
 
@@ -167,4 +169,5 @@ def LikeView(request, pk):
         taro.likes.add(request.user)
         liked = True
     return HttpResponseRedirect(reverse('taro:taro_detail', args=[str(pk)]))
-    
+
+

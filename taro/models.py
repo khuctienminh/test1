@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import CustomUser
+from django.db.models import Count
 # Create your models here.
 
 
@@ -19,7 +20,7 @@ class Tag(models.Model):
 
 class Taro(models.Model):
 
-    user = models.ForeignKey(CustomUser,verbose_name='ユーザー',on_delete=models.PROTECT)
+    user = models.ForeignKey(CustomUser,verbose_name='ユーザー',on_delete=models.PROTECT,related_name='posts')
     areaname= models.CharField(verbose_name='施設名',max_length=40)
     eki = models.CharField(verbose_name='駅',max_length=40)
     kenmei = models.CharField(verbose_name='都道府県',max_length=40,choices=Ken_choice,blank=True,null=True)

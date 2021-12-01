@@ -72,22 +72,7 @@
         </div>
 
         <hr>
-        <form action="{% url 'taro:like_taro' taro.pk %}" method="POST">
-            {% csrf_token %}
-
-            {% if user.is_authenticated %}
-                {% if liked %}
-                <button type="submit" name="taro_id" value="{{ taro.id }}", class="btn btn-danger btn-sm">UnLike</button> 
-                {% else %}
-                <button type="submit" name="taro_id" value="{{ taro.id }}", class="btn btn-primary btn-sm">Like</button> 
-                {% endif %}           
-            {% else %}
-                <small><a href="{% url 'account_login' %}">Login to like</a></small>
-            {% endif %}
-            
-             - {{ total_likes }}
-        </form>
-        <hr>
+        
         {% if user.id == taro.user.id %}
         <div class="row">
             <div class="col-3">
@@ -108,8 +93,31 @@
                 {{ taro.updated_at }}
             </div>
         </div>
+        {% if total_likes > 1 %}
+            <p>{{ total_likes }} likes</p>
+        {% else %}
+            <p>{{ total_likes }} like</p>
+        {% endif %}
+        
         <a class="btn btn-success mt-5 mb-3" href="{% url 'taro:taro_update' taro.pk %}">編集</a>
         <a class="btn btn-danger mt-5 ml-2 mb-3" href="{% url 'taro:taro_delete' taro.pk %}">削除</a>
+
+        {% else %}
+        <form action="{% url 'taro:like_taro' taro.pk %}" method="POST">
+            {% csrf_token %}
+
+            {% if user.is_authenticated %}
+                {% if liked %}
+                <button type="submit" name="taro_id" value="{{ taro.id }}", class="btn btn-danger btn-sm">UnLike</button> 
+                {% else %}
+                <button type="submit" name="taro_id" value="{{ taro.id }}", class="btn btn-primary btn-sm">Like</button> 
+                {% endif %}           
+            {% else %}
+                <small><a href="{% url 'account_login' %}">Login to like</a></small>
+            {% endif %}
+            
+             - {{ total_likes }}
+        </form>
         {% endif %}
         
 

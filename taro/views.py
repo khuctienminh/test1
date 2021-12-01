@@ -113,7 +113,13 @@ class TaroDetailView(LoginRequiredMixin,generic.DetailView):
         stuff = get_object_or_404(Taro, id=self.kwargs['pk'])
         data = super().get_context_data(**kwargs)
         total_likes = stuff.total_likes()
+
+        liked = False
+        if stuff.likes.filter(id=self.request.user.id).exists():
+            liked = True
+
         data['total_likes'] = total_likes
+        data['liked'] = liked
         return data
 
 
@@ -153,6 +159,12 @@ class KensakuTaroListView(generic.ListView):
 
 def LikeView(request, pk):
     taro = get_object_or_404(Taro, id=request.POST.get('taro_id'))
-    taro.likes.add(request.user)
+    liked = False
+    if taro.likes.filter(id=request.user.id).exists():
+        taro.likes.remove(request.user)
+        liked = False
+    else:
+        taro.likes.add(request.user)
+        liked = True
     return HttpResponseRedirect(reverse('taro:taro_detail', args=[str(pk)]))
     

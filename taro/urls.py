@@ -18,4 +18,6 @@ urlpatterns = [
     path('taro-update/<int:pk>/',views.TaroUpdateView.as_view(),name="taro_update"),
     path('taro-delete/<int:pk>/',views.TaroDeleteView.as_view(),name="taro_delete"),
     path('like/<int:pk>/',views.LikeView,name='like_taro'),
+    path('mypage/<int:pk>/',views.MyPageView.as_view(),name = 'mypage'),
+
 ]

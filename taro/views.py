@@ -3,6 +3,8 @@ import re
 from django.contrib.auth.mixins import LoginRequiredMixin
 # from .models import Taro
 import logging
+from django.db import models
+from django.http.response import HttpResponse
 from django.urls import reverse_lazy
 from django.urls.base import reverse
 # from . import template
@@ -15,6 +17,7 @@ from django.http import HttpResponseRedirect
 logger = logging.getLogger(__name__)
 
 from .forms import InquiryForm,InquiryForm1,InquiryForm2,UserInfoCreateForm,TaroCreateForm
+from django.utils import timezone
 # Create your views here.
 class IndexView(generic.TemplateView):
   template_name = 'index.html'
@@ -169,4 +172,28 @@ def LikeView(request, pk):
         taro.likes.add(request.user)
         liked = True
     return HttpResponseRedirect(reverse('taro:taro_detail', args=[str(pk)]))
+
+class MyPageView(generic.DetailView):
+    model = CustomUser
+    template_name = "mypage.html"
+
+    def get_context_data(self, **kwargs):
+        man = get_object_or_404(CustomUser, id=self.kwargs['pk'])
+        data = super().get_context_data(**kwargs)
+
+        timecreate = man.date_joined
+        timenow = timezone.now()
+        a = timenow - timecreate
+        b = a.days
+        post = Taro.objects.filter(user=man)
+        totalpost = post.count()
+
+        usertotallikes = 0
+        for p in post:
+            a = p.likes.count()
+            usertotallikes = usertotallikes + a
+        data['usertotallikes'] = usertotallikes
+        data['time'] = b
+        data['totalpost'] = totalpost
+        return data
 

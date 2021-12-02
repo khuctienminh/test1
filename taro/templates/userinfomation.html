@@ -47,6 +47,15 @@
             </div>
         </div>
         <hr>
+        <div class="row">
+            <div class="col-3">
+                <strong>紹介</strong>
+            </div>
+            <div class="col-9">
+                {{ object.shokai }}
+            </div>
+        </div>
+        <hr>
 
       　<p><a class="button secondaryAction" href="{% url 'account_reset_password' %}">パスワードを変更</a></p>
         <a class="btn btn-success mt-5 mb-3" href="{% url 'taro:userinfocreate' object.pk %}">編集</a>

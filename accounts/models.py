@@ -24,7 +24,7 @@ class CustomUser(AbstractUser):
   age = models.IntegerField(verbose_name='年代', choices=YEAR_CHOICES,blank=True,null=True)
   sex = models.CharField(verbose_name='性別',choices=Sex_choice,max_length=40,blank=True,null=True)
   image = models.ImageField(verbose_name='写真',blank=True,null=True)
-  
+  shokai = models.TextField(verbose_name='紹介',blank=True,null=True)
 
   class Meta:
     verbose_name_plural ='CustomUser'

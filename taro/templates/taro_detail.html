@@ -3,7 +3,7 @@
 
 {% block active_taro_list %}active{% endblock %}
 {% block header%}
-<header class="masthead" src="{% static 'assets/img/touroku.png' %}">
+<header class="masthead">
     <div class="container position-relative px-4 px-lg-5">
     </div>
 </header>
@@ -93,6 +93,12 @@
                 {{ taro.updated_at }}
             </div>
         </div>
+        {% if total_likes > 1 %}
+            <p>{{ total_likes }} likes</p>
+        {% else %}
+            <p>{{ total_likes }} like</p>
+        {% endif %}
+        
         <a class="btn btn-success mt-5 mb-3" href="{% url 'taro:taro_update' taro.pk %}">編集</a>
         <a class="btn btn-danger mt-5 ml-2 mb-3" href="{% url 'taro:taro_delete' taro.pk %}">削除</a>
 

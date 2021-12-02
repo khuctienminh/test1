@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block active_userinfo %}active{% endblock %}
+{% block header%}
+<header class="masthead">
+    <div class="container position-relative px-4 px-lg-5">
+    </div>
+</header>
+{% endblock %}
+{% block bodyue %}
+    <div class="my-div-style w-100">
+      <div class="col-3">
+          {% if object.image %}
+              <img src="{{ object.image.url }}" width="200" height="200"/>
+          {% endif %}
+      </div>
+      
+      <hr>
+
+      <div class="row">
+          <div class="col-9">
+              {{ object.name }}
+          </div>
+      </div>
+
+      <hr>
+
+
+      <div class="row">
+          <div class="col-9">
+              {{ object.age }} 年代
+          </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+          <div class="col-9">
+              紹介:{{ object.shokai }}
+          </div>
+      </div>
+    </div>
+    <p>time:{{ time }}</p>
+    <p>total_likes:{{ usertotallikes }}</p>
+    <p>total_post:{{ totalpost }}</p>
+{% endblock %}

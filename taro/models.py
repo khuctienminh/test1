@@ -32,6 +32,8 @@ class Taro(models.Model):
     photo1 = models.ImageField(verbose_name='写真１',upload_to='images',blank=True,null=True)
     photo2 = models.ImageField(verbose_name='写真２',upload_to='images',blank=True,null=True)
     photo3 = models.ImageField(verbose_name='写真３',upload_to='images',blank=True,null=True)
+    photo4 = models.ImageField(verbose_name='写真４',upload_to='images',blank=True,null=True)
+    photo5 = models.ImageField(verbose_name='写真５',upload_to='images',blank=True,null=True)
     likes = models.ManyToManyField(CustomUser,related_name='likes')
     created_at = models.DateTimeField(verbose_name='作成日時',auto_now_add=True)
     update_at = models.DateTimeField(verbose_name='新日時',auto_now=True)

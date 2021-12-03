@@ -144,7 +144,9 @@ class TaroCreateForm(forms.ModelForm):
                     'naiyou',
                     'photo1',
                     'photo2',
-                    'photo3',)
+                    'photo3',
+                    'photo4',
+                    'photo5',)
 
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)

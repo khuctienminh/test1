@@ -228,3 +228,9 @@ button:hover {
   border-radius: 50%;
   background: white
 }
+
+#asd {
+  position: absolute;
+  margin-top: 50%;
+  margin-left: 50%;
+}

@@ -44,4 +44,19 @@
     <p>time:{{ time }}</p>
     <p>total_likes:{{ usertotallikes }}</p>
     <p>total_post:{{ totalpost }}</p>
+
+    {% for taro in post %}
+        <div class="post-preview">
+            <a href="{% url 'taro:taro_detail' taro.pk %}">
+                <h2 class="post-title">
+                {% if taro.photo1 %}
+                    <img src="{{ taro.photo1.url }}" width="150px" height="150px" />
+                {% endif %}
+                </h2>
+            </a>
+        </div>
+    {% empty %}
+        <p>Taroがありません</p>
+    {% endfor %}
+    
 {% endblock %}

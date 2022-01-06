@@ -1,4 +1,4 @@
-{% extends 'mypage.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 
@@ -8,6 +8,40 @@
 
 
 {% block contents %}
+<div class="my-div-style w-100">
+  <div class="col-3">
+      {% if user.image %}
+          <img src="{{ user.image.url }}" width="200" height="200"/>
+      {% endif %}
+  </div>
+  
+  <hr>
+
+  <div class="row">
+      <div class="col-9">
+          {{ user.name }}
+      </div>
+  </div>
+
+  <hr>
+
+
+  <div class="row">
+      <div class="col-9">
+          {{ user.age }} 年代
+      </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+      <div class="col-9">
+          紹介:{{ user.shokai }}
+      </div>
+  </div>
+  <p>time:{{ time }}</p>
+  <p>total_likes:{{ usertotallikes }}</p>
+  <p>total_post:{{ totalpost }}</p>
 <div class="container">
     <div class="row">
         <div class="my-div-style w-100">
@@ -16,18 +50,33 @@
                     <a class="btn btn-primary float-right" href="{% url 'taro:taro_create' %}">新規作成</a>
                 </div>
                 {% for taro in taro_list %}
-                  <div class="post-preview">
-                      <a href="{% url 'taro:taro_detail' taro.pk %}">
-                          <h2 class="post-title">
+                    <div class="post-preview">
+                        <a href="{% url 'taro:taro_detail' taro.pk %}">
+                            <h2 class="post-title">
                             {% if taro.photo1 %}
-                              <img src="{{ taro.photo1.url }}" width="150px" height="150px" />
+        
+                            <img src="{{ taro.photo1.url }}" width="150px" height="150px" />
                             {% endif %}
-                          </h2>
-                      </a>
-                  </div>
-                  {% empty %}
+                            </h2>
+                        </a>
+                    </div>
+                {% empty %}
                     <p>Taroがありません</p>
-                  {% endfor %}
+                {% endfor %}
+
+                {% for taro in postlike %}
+                    <div class="post-preview">
+                        <a href="{% url 'taro:taro_detail' taro.pk %}">
+                            <h2 class="post-title">
+                            {% if taro.photo1 %}
+                                <img src="{{ taro.photo1.url }}" width="150px" height="150px" />
+                            {% endif %}
+                            </h2>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>Taroがありません</p>
+                {% endfor %} 
             </div>
         </div>
     </div>

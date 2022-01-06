@@ -190,7 +190,7 @@ DATABASES = {
         #'USER':os.environ.get('DB_USER'),
         #'PASSWORD':os.environ.get('DB_PASSWORD'),
         'USER':'postgres',
-        'PASSWORD':'minh0986121168',
+        'PASSWORD':'2035145',
         'HOST':'',
         'PORT':'',
     }

@@ -84,3 +84,14 @@ for (i = 0; i < y.length; i++) {
      if (y[i].value=="" ) { y[i].className +=" invalid" ; valid=false; } } 
      
 if (valid) { document.getElementsByClassName("step")[currentTab].className +=" finish" ; } return valid; } function fixStepIndicator(n) { var i, x=document.getElementsByClassName("step"); for (i=0; i < x.length; i++) { x[i].className=x[i].className.replace(" active", "" ); } x[n].className +=" active" ; }
+
+
+var thamso = 1;
+function thaylist() {
+    thamso = 0;
+    return thamso;
+}
+function trolai() {
+    thamso = 1;
+    return thamso;
+}

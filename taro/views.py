@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # from .models import Taro
 import logging
 from django.db import models
+from django.http import request
+from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.urls import reverse_lazy
 from django.urls.base import reverse
@@ -89,6 +91,29 @@ class TaroListView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         portfolio = Taro.objects.filter(user=self.request.user).order_by('-created_at')
         return portfolio
+
+    def get_context_data(self,**kwargs):
+        man = self.request.user
+        data = super().get_context_data(**kwargs)
+
+        timecreate = man.date_joined
+        timenow = timezone.now()
+        a = timenow - timecreate
+        b = a.days
+        post = Taro.objects.filter(user=man)
+        totalpost = post.count()
+        postlike = man.likes.all()
+
+        usertotallikes = 0
+        for p in post:
+            a = p.likes.count()
+            usertotallikes = usertotallikes + a
+        data['usertotallikes'] = usertotallikes
+        data['time'] = b
+        data['totalpost'] = totalpost
+        data['postlike'] = postlike
+        return data
+
 
 
 
@@ -177,7 +202,7 @@ class MyPageView(generic.DetailView):
     model = CustomUser
     template_name = "mypage.html"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self,**kwargs):
         man = get_object_or_404(CustomUser, id=self.kwargs['pk'])
         data = super().get_context_data(**kwargs)
 
@@ -195,5 +220,5 @@ class MyPageView(generic.DetailView):
         data['usertotallikes'] = usertotallikes
         data['time'] = b
         data['totalpost'] = totalpost
+        data['post'] = post
         return data
-

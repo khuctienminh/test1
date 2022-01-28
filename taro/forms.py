@@ -119,8 +119,7 @@ class InquiryForm2(forms.Form):
 class UserInfoCreateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = (  'first_name',
-                    'last_name',
+        fields = (  'username',
                     'email',
                     'age',
                     'sex',
@@ -151,4 +150,27 @@ class TaroCreateForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'      
+            field.widget.attrs['class'] = 'form-control'    
+
+Ken_choice = (
+        ('---','---'),
+        ('chiba','千葉'),
+        ('kanagawa','神奈川'),
+        ('tokyo','東京'),
+        ('oosaka','大阪'),
+    )
+
+YEAR_CHOICES = (
+        ('---','---'),
+        (10, '10代'),
+        (20, '20代'),
+        (30, '30代'),
+        (40, '40代'),
+        (50, '50代'),
+        (60, '60代'),
+        (70, '70代'),
+        (80, '80代'),
+        (90, '90代'),
+    )
+
+    

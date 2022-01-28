@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block active_taro_list %}active{% endblock %}
+
 {% block header%}
 <header class="masthead">
     <div class="container position-relative px-4 px-lg-5">
@@ -10,117 +11,136 @@
 {% endblock %}
 
 {% block contents %}
-<div class="container">
-    <div class="my-div-style w-100">
-        <div class="row">
-            <div class="col-9">
-                {{ taro.areaname }}
+<body id="detailbody">
+    <div class="container">
+        <div class="my-div-style w-100">
+            <div class="slide-wrap">
+                <div class="slider">
+                    {% if taro.photo1 %}
+                    <div class="slide" id="slide-1">
+                        <img src="{{ object.photo1.url }}" width="600" height="600"/>
+                    </div>
+                    {% endif %}
+                    {% if taro.photo2 %}
+                    <div class="slide" id="slide-2">
+                        <img src="{{ object.photo2.url }}" width="600" height="600"/>
+                    </div>
+                    {% endif %}
+                    {% if taro.photo3 %}
+                    <div class="slide" id="slide-3">
+                        <img src="{{ object.photo3.url }}" width="600" height="600"/>
+                    </div>
+                    {% endif %}
+                    {% if taro.photo4 %}
+                    <div class="slide" id="slide-4">
+                        <img src="{{ object.photo4.url }}" width="600" height="600"/>
+                    </div>
+                    {% endif %}
+                    {% if taro.photo5 %}
+                    <div class="slide" id="slide-5">
+                        <img src="{{ object.photo5.url }}" width="600" height="600"/>
+                    </div>
+                    {% endif %}
+                    
+                    
+                </div>
+                <div>
+                    {% if taro.photo2 %}
+                    <a href="#slide-1">〇</a>
+                    {% endif %}
+                    {% if taro.photo2 %}
+                    <a href="#slide-2">〇</a>
+                    {% endif %}
+                    {% if taro.photo3 %}
+                    <a href="#slide-3">〇</a>
+                    {% endif %}
+                    {% if taro.photo4 %}
+                    <a href="#slide-4">〇</a>
+                    {% endif %}
+                    {% if taro.photo5 %}
+                    <a href="#slide-5">〇</a>
+                    {% endif %}
+                </div>   
             </div>
-        </div>
-
-        <hr>
-        <div class="row">
-          <div class="col-9">
-              {{ user.name }}
-          </div>
-        </div>
-
-        <hr>
-        <div class="row">
-          <div class="col-9">
-              {{ taro.kenmei }}
-          </div>
-        </div>
-
-        <hr>
-        <div class="row">
-          <div class="col-9">
-              {{ taro.eki }}
-          </div>
-        </div>
-
-        <hr>
-        <div class="row">
-          <div class="col-9">
-              {{ taro.okane }}
-          </div>
-        </div>
-
-        <hr>
-        
-
-
-        <div class="row">
-            <div class="col-3">
-                <strong>写真</strong>
+            <div class="row" id="detailareaflame">
+                <div class="col-9" id="detailarea">
+                    {{ taro.areaname }}
+                </div>
             </div>
-            <div class="col-3">
-                {% if taro.photo1 %}
-                    <img src="{{ object.photo1.url }}" width="200" height="200"/>
-                {% endif %}
+            <div class="row">
+                <div class="col-9">
+                    <a href="{% url 'taro:mypage' taro.user.pk %}">
+                        <h2 class="post-title">
+                        {% if taro.user.image %}
+                            <img src="{{ taro.user.image.url }}" id="detailicon">
+                        {% endif %}
+                        </h2>
+                    </a>    
+                </div>
             </div>
-            <div class="col-3">
-                {% if taro.photo2 %}
-                    <img src="{{ object.photo2.url }}" width="200" height="200"/>
-                {% endif %}
+            <div class="row" id="detailuserflame">
+                <div class="col-9" id="detailusername">
+                    {{ taro.user }}
+                </div>
+            </div> 
+            <div class="row" id="detailkenmeiflame">
+                <div class="col-9"id="detailkenmei">
+                    {{ taro.kenmei }}
+                </div>
             </div>
-            <div class="col-3">
-                {% if taro.photo3 %}
-                    <img src="{{ object.photo3.url }}" width="200" height="200"/>
-                {% endif %}
+            <div class="row" id="detailekiflame">
+                <div class="col-9" id="detaileki">
+                    {{ taro.eki }}駅
+                </div>
             </div>
-        </div>
+            <div class="row" id="detailokaneflame">
+                <div class="col-9" id="detailokane">
+                    {{ taro.okane }}円
+                </div>
+            </div>
+            <div class="row" id="detailnaiyouflame">
+                <div class="col-9" id="detailnaiyou">
+                    {{ taro.naiyou }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-9" id="detailtime">
+                    作成日時:{{ taro.created_at }}
+                </div>
+            </div>         
+            {% if user.id == taro.user.id %}
+            <div class="row" id="detaillikeflame">
+                <div class="col-9" id="detaillike">
+                    ♡{{ taro.likestotal }}
+                </div>
+            </div>
+            <a class="btn btn-success mt-5 mb-3" href="{% url 'taro:taro_update' taro.pk %}" id="editbtn">編集</a>
+            <a class="btn btn-danger mt-5 ml-2 mb-3" href="{% url 'taro:taro_delete' taro.pk %}" id="deletebtn">削除</a>
 
-        <hr>
-        
-        {% if user.id == taro.user.id %}
-        <div class="row">
-            <div class="col-3">
-                <strong>作成日時</strong>
-            </div>
-            <div class="col-9">
-                {{ taro.created_at }}
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-3">
-                <strong>更新日時</strong>
-            </div>
-            <div class="col-9">
-                {{ taro.updated_at }}
-            </div>
-        </div>
-        {% if total_likes > 1 %}
-            <p>{{ total_likes }} likes</p>
-        {% else %}
-            <p>{{ total_likes }} like</p>
-        {% endif %}
-        
-        <a class="btn btn-success mt-5 mb-3" href="{% url 'taro:taro_update' taro.pk %}">編集</a>
-        <a class="btn btn-danger mt-5 ml-2 mb-3" href="{% url 'taro:taro_delete' taro.pk %}">削除</a>
-
-        {% else %}
-        <form action="{% url 'taro:like_taro' taro.pk %}" method="POST">
-            {% csrf_token %}
-
-            {% if user.is_authenticated %}
-                {% if liked %}
-                <button type="submit" name="taro_id" value="{{ taro.id }}", class="btn btn-danger btn-sm">UnLike</button> 
-                {% else %}
-                <button type="submit" name="taro_id" value="{{ taro.id }}", class="btn btn-primary btn-sm">Like</button> 
-                {% endif %}           
             {% else %}
-                <small><a href="{% url 'account_login' %}">Login to like</a></small>
+            <form action="{% url 'taro:like_taro' taro.pk %}" method="POST">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <div class="likebtn" id="likebtnpos">
+                    {% if liked %}
+                    <button type="submit" name="taro_id" value="{{ taro.id }}", class="btn btn-danger btn-sm" id="likebtn1">いいねをはずす</button> 
+                    {% else %}
+                    <button type="submit" name="taro_id" value="{{ taro.id }}", class="btn btn-primary btn-sm" id="likebtn2">いいねボタン</button> 
+                    {% endif %} 
+                </div>               
+                {% else %}
+                    <small><a href="{% url 'account_login' %}">Login to like</a></small>
+                {% endif %}
+                <div class="row" id="detaillikeflame">
+                    <div class="col-9" id="detaillike">
+                        ♡{{ taro.likestotal }}
+                    </div>
+                </div>
+            </form>
             {% endif %}
-            
-             - {{ total_likes }}
-        </form>
-        {% endif %}
-        
-
+        </div>
     </div>
-</div>
+    
+</body>
 {% endblock %}
+

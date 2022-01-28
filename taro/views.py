@@ -1,4 +1,6 @@
 
+from itertools import count
+from pickle import TRUE
 import re
 from django.contrib.auth.mixins import LoginRequiredMixin
 # from .models import Taro
@@ -16,7 +18,9 @@ from django.contrib import messages
 from accounts.models import CustomUser
 from .models import Tag,Taro
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 logger = logging.getLogger(__name__)
+from django.db.models import Count
 
 from .forms import InquiryForm,InquiryForm1,InquiryForm2,UserInfoCreateForm,TaroCreateForm
 from django.utils import timezone
@@ -84,13 +88,18 @@ class TopView(generic.TemplateView):
   template_name = 'top.html'
 
 
+
+
 class TaroListView(LoginRequiredMixin,generic.ListView):
     model = Taro
     template_name= 'taro_list.html'
 
+
     def get_queryset(self):
         portfolio = Taro.objects.filter(user=self.request.user).order_by('-created_at')
         return portfolio
+
+    
 
     def get_context_data(self,**kwargs):
         man = self.request.user
@@ -100,19 +109,23 @@ class TaroListView(LoginRequiredMixin,generic.ListView):
         timenow = timezone.now()
         a = timenow - timecreate
         b = a.days
-        post = Taro.objects.filter(user=man)
+        post = Taro.objects.filter(user=man).order_by('-created_at')
         totalpost = post.count()
         postlike = man.likes.all()
 
-        usertotallikes = 0
-        for p in post:
-            a = p.likes.count()
-            usertotallikes = usertotallikes + a
-        data['usertotallikes'] = usertotallikes
+        erabu = self.request.GET.get('newsletter_sub')
+        if erabu == 'お気に入り投稿':
+            erabu = True
+        else:
+            erabu = False
+
+        data['erabu'] = erabu
         data['time'] = b
         data['totalpost'] = totalpost
         data['postlike'] = postlike
         return data
+
+    
 
 
 
@@ -135,20 +148,18 @@ class TaroCreateView(LoginRequiredMixin,generic.CreateView):
         return super().form_invalid(form)
 
 
-class TaroDetailView(LoginRequiredMixin,generic.DetailView):
+class TaroDetailView(generic.DetailView):
     model = Taro
     template_name = "taro_detail.html"
 
     def get_context_data(self, **kwargs):
         stuff = get_object_or_404(Taro, id=self.kwargs['pk'])
         data = super().get_context_data(**kwargs)
-        total_likes = stuff.total_likes()
 
         liked = False
         if stuff.likes.filter(id=self.request.user.id).exists():
             liked = True
 
-        data['total_likes'] = total_likes
         data['liked'] = liked
         return data
 
@@ -179,13 +190,7 @@ class TaroDeleteView(LoginRequiredMixin,generic.DeleteView):
         return super().delete(request,*args,**kwargs)
 
 
-class KensakuTaroListView(generic.ListView):
-    model = Taro
-    template_name= 'kensakutaro_list.html'
 
-    def get_queryset(request):
-        portfolio = Taro.objects.all()
-        return portfolio
 
 def LikeView(request, pk):
     taro = get_object_or_404(Taro, id=request.POST.get('taro_id'))
@@ -196,7 +201,23 @@ def LikeView(request, pk):
     else:
         taro.likes.add(request.user)
         liked = True
+
+
+    man = get_object_or_404(CustomUser,username=taro.user)
+    post = Taro.objects.filter(user=man)
+    usertotallikes = 0
+    for p in post:
+        a = p.likes.count()
+        usertotallikes = usertotallikes + a
+    man.likerecieve = usertotallikes
+    man.save()
+ 
+    taro.likestotal = taro.likes.count()
+    taro.save()
+
+
     return HttpResponseRedirect(reverse('taro:taro_detail', args=[str(pk)]))
+
 
 class MyPageView(generic.DetailView):
     model = CustomUser
@@ -206,19 +227,147 @@ class MyPageView(generic.DetailView):
         man = get_object_or_404(CustomUser, id=self.kwargs['pk'])
         data = super().get_context_data(**kwargs)
 
+        erabi = self.request.GET.get('toujun')
+        if erabi == 'お気に入り順位':
+            erabi = True
+        else:
+            erabi = False
         timecreate = man.date_joined
         timenow = timezone.now()
         a = timenow - timecreate
         b = a.days
-        post = Taro.objects.filter(user=man)
+        if erabi == False:
+            post = Taro.objects.filter(user=man).order_by('-created_at')
+        else:
+            post = Taro.objects.filter(user=man).order_by('-likestotal')
+        
         totalpost = post.count()
-
-        usertotallikes = 0
-        for p in post:
-            a = p.likes.count()
-            usertotallikes = usertotallikes + a
-        data['usertotallikes'] = usertotallikes
+        
         data['time'] = b
         data['totalpost'] = totalpost
         data['post'] = post
+        data['erabi'] = erabi
         return data
+
+
+class KensakuView(generic.TemplateView):
+    template_name= 'kensaku.html'
+    success_url = reverse_lazy('taro:kensaku-kekka')
+
+
+    def get_context_data(self,**kwargs):
+        data = super().get_context_data(**kwargs)
+        portfolio = Taro.objects.order_by('-likestotal')[:3] 
+        man = CustomUser.objects.order_by('-likerecieve')[:3]
+        data['portfolio'] = portfolio
+        data['man'] = man
+        return data
+
+    
+
+class KensakuKekkaView(generic.ListView):
+    model = Taro
+    template_name= 'kensaku_kekka.html'
+
+
+    
+    def get_context_data(self,**kwargs):
+        data = super().get_context_data(**kwargs)
+        kensakunaiyo = self.request.GET.get('kensakunaiyo')
+        kenmei = self.request.GET.get('kenmei')
+        age = self.request.GET.get('age')
+        okane = self.request.GET.get('okane')
+
+        userkensa = self.request.GET.get('userkensa')
+
+
+        if okane:
+            if okane == "1":
+                okane1 = (0,1000)
+            elif okane == "2":
+                okane1 = (1000,10000)
+            elif okane == "3":
+                okane1 = (10000,50000)
+            elif okane == "4":
+                okane1 = (50000,100000)
+            elif okane == "5":
+                okane1 = (100000,1000000)
+                
+        
+        if okane:
+            if kensakunaiyo:
+                if kenmei:
+                    if age:
+                        portfolio = Taro.objects.filter(okane__range=(okane1)).filter(kenmei=kenmei).filter(user__age=age).filter(
+                            Q(areaname__icontains=kensakunaiyo) | Q(eki__icontains=kensakunaiyo)| Q(tag__tagname__contains=kensakunaiyo) | Q(naiyou__icontains=kensakunaiyo)
+                        )
+                    else:
+                        portfolio = Taro.objects.filter(okane__range=(okane1)).filter(kenmei=kenmei).filter(
+                            Q(areaname__icontains=kensakunaiyo) | Q(eki__icontains=kensakunaiyo) | Q(tag__tagname__contains=kensakunaiyo) | Q(naiyou__icontains=kensakunaiyo)
+                        )
+                elif age:
+                    portfolio = Taro.objects.filter(okane__range=(okane1)).filter(user__age=age).filter(
+                        Q(areaname__icontains=kensakunaiyo) | Q(eki__icontains=kensakunaiyo) | Q(tag__tagname__contains=kensakunaiyo) | Q(naiyou__icontains=kensakunaiyo)
+                    )
+                else:
+                    portfolio = Taro.objects.filter(okane__range=(okane1)).filter(
+                        Q(areaname__icontains=kensakunaiyo) | Q(eki__icontains=kensakunaiyo) | Q(tag__tagname__icontains=kensakunaiyo) | Q(naiyou__icontains=kensakunaiyo)
+                    )
+            else:
+                if kenmei:
+                    if age:
+                        portfolio = Taro.objects.filter(okane__range=(okane1)).filter(kenmei=kenmei).filter(user__age=age)
+                    else:
+                        portfolio = Taro.objects.filter(okane__range=(okane1)).filter(kenmei=kenmei)
+                elif age:
+                    portfolio = Taro.objects.filter(okane__range=(okane1)).filter(user__age=age)
+                else:
+                    portfolio = Taro.objects.filter(okane__range=(okane1))
+        else:
+            if kensakunaiyo:
+                if kenmei:
+                    if age: 
+                        portfolio = Taro.objects.filter(kenmei=kenmei).filter(user__age=age).filter(
+                            Q(areaname__icontains=kensakunaiyo) | Q(eki__icontains=kensakunaiyo) | Q(okane__icontains=kensakunaiyo) | Q(tag__tagname__contains=kensakunaiyo) | Q(naiyou__icontains=kensakunaiyo)
+                        )
+                    else:
+                        portfolio = Taro.objects.filter(kenmei=kenmei).filter(
+                            Q(areaname__icontains=kensakunaiyo) | Q(eki__icontains=kensakunaiyo) | Q(okane__icontains=kensakunaiyo) | Q(tag__tagname__contains=kensakunaiyo) | Q(naiyou__icontains=kensakunaiyo)
+                        )
+                elif age:
+                    portfolio = Taro.objects.filter(user__age=age).filter(
+                        Q(areaname__icontains=kensakunaiyo) | Q(eki__icontains=kensakunaiyo) | Q(okane__icontains=kensakunaiyo) | Q(tag__tagname__contains=kensakunaiyo) | Q(naiyou__icontains=kensakunaiyo)
+                    )
+                else:
+                    portfolio = Taro.objects.filter(
+                        Q(areaname__icontains=kensakunaiyo) | Q(eki__icontains=kensakunaiyo) | Q(okane__icontains=kensakunaiyo) | Q(tag__tagname__icontains=kensakunaiyo) | Q(naiyou__icontains=kensakunaiyo)
+                    )
+            else:
+                if kenmei:
+                    if age:
+                        portfolio = Taro.objects.filter(kenmei=kenmei).filter(user__age=age)
+                    else:
+                        portfolio = Taro.objects.filter(kenmei=kenmei)
+                elif age:
+                    portfolio = Taro.objects.filter(user__age=age)
+                else:
+                    portfolio = Taro.objects.all()
+
+        theogio = portfolio.order_by('-created_at')
+        port = portfolio.order_by('-likestotal')
+
+        if userkensa:
+            userkensaku = CustomUser.objects.filter(Q(username__icontains=userkensa))
+            data['userkensaku'] = userkensaku
+            if userkensaku != TRUE:
+                userkensakunothing = 'nothing'
+                data['userkensakunothing'] = userkensakunothing
+            
+        
+        data['theogio'] = theogio
+        data['portfolio'] = port
+
+        return data
+
+
+    

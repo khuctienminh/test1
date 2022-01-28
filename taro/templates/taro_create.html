@@ -8,68 +8,106 @@
     </div>
 </header>
 {% endblock %}
+
 {% block contents %}
-<div class="container mt-5">
-  <div class="row d-flex justify-content-center align-items-center">
-      <div class="col-md-6">
-          <form id="regForm" method="POST" enctype='multipart/form-data'>
-              {% csrf_token %}
-              <h1 id="register">新規投稿</h1>
-              <div class="all-steps" id="all-steps"> <span class="step"></span> <span class="step"></span> </div>
-              <div class="tab">情報設定ページ
-                <div class="fieldWrapper">
-                  <label for="{{ form.kenmei.id_for_label }}">都道府県を選択:</label>
-                  {{ form.kenmei }}
-                  {{ form.kenmei.errors }}
-                </div>
-                <div class="fieldWrapper1">
-                  <label for="{{ form.eki.id_for_label }}">駅を入力:</label>
-                  {{ form.eki }}
-                  {{ form.eki.errors }}
-                </div>
-                <div class="fieldWrapper1">
-                  <label for="{{ form.areaname.id_for_label }}">施設名:</label>
-                  {{ form.areaname }}
-                  {{ form.areaname.errors }}
-                </div>
-                <div class="fieldWrapper1">
-                  <label for="{{ form.okane.id_for_label }}">費用を入力:</label>
-                  {{ form.okane }}
-                  {{ form.okane.errors }}
-                </div>
-                <div class="fieldWrapper">
-                  <label for="{{ form.tag.id_for_label }}">タグを選択:</label>
-                  {{ form.tag }}
-                  {{ form.tag.errors }}
-                </div>
-              </div>
-              <div class="tab">コメント記入ページ：
-                <div class="fieldWrapper1">
-                  <label for="{{ form.naiyou.id_for_label }}">コメント記入:</label>
-                  {{ form.naiyou }}
-                  {{ form.naiyou.errors }}
-                </div>
-                <div class="fieldWrapper1">
-                  <label for="{{ form.photo1.id_for_label }}">写真１:</label>
-                  {{ form.photo1 }}
-                  {{ form.photo1.errors }}
-                </div>
-                <div class="fieldWrapper">
-                  <label for="{{ form.photo2.id_for_label }}">写真２:</label>
-                  {{ form.photo2 }}
-                  {{ form.photo2errors }}
-                </div>
-                <div class="fieldWrapper">
-                  <label for="{{ form.photo3.id_for_label }}">写真３:</label>
-                  {{ form.photo3 }}
-                  {{ form.photo3.errors }}
-                </div>
-              </div> 
-              <div style="overflow:auto;" id="nextprevious">
-                  <div style="float:right;"> <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button> <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button> </div>
-              </div>
-          </form>
+<body class="body_guest">
+    <div class="container mt-5">
+      <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-md-6">
+              <form id="regForm" method="POST" enctype='multipart/form-data'>
+                  {% csrf_token %}
+                  <div class="all-steps" id="all-steps"> 
+                    <span class="step"></span> 
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span> 
+                  </div>
+
+                    <div class="tab"  id="create_base1">
+                      <div class="fieldWrapper1" id="photo_1">
+                        <label for="{{ form.photo1.id_for_label }}">1枚目</label>
+                        {{ form.photo1 }}
+                        {{ form.photo1.errors }}   
+                      </div>
+
+                      <div class="fieldWrapper" id="photo_2">
+                        <label for="{{ form.photo2.id_for_label }}">2枚目</label>
+                        {{ form.photo2 }}
+                        {{ form.photo2errors }}
+                      </div>
+
+                      <div class="fieldWrapper" id="photo_3">
+                        <label for="{{ form.photo3.id_for_label }}">3枚目</label>
+                        {{ form.photo3 }}
+                        {{ form.photo3.errors }}
+                      </div>
+
+                      <div class="fieldWrapper" id="photo_4">
+                        <label for="{{ form.photo4.id_for_label }}">4枚目</label>
+                        {{ form.photo4 }}
+                        {{ form.photo4.errors }}
+                      </div>
+
+                      <div class="fieldWrapper" id="photo_5">
+                        <label for="{{ form.photo5.id_for_label }}">5枚目</label>
+                        {{ form.photo5 }}
+                        {{ form.photo5.errors }}
+                      </div>
+
+                      <div class="fieldWrapper1" id="create_TD">
+                        <label for="{{ form.kenmei.id_for_label }}">都道府県を選択</label>
+                        {{ form.kenmei }}
+                        {{ form.kenmei.errors }}
+                      </div>
+                      <div class="fieldWrapper1" id="create_E">
+                        <label for="{{ form.eki.id_for_label }}">駅を入力</label>
+                        {{ form.eki }}
+                        {{ form.eki.errors }}
+                      </div>
+                      <div class="fieldWrapper1" id="create_S">
+                        <label for="{{ form.areaname.id_for_label }}">施設名</label>
+                        {{ form.areaname }}
+                        {{ form.areaname.errors }}
+                      </div>
+                      <div class="fieldWrapper1" id="create_H">
+                        <label for="{{ form.okane.id_for_label }}">費用を入力</label>
+                        {{ form.okane }}
+                        {{ form.okane.errors }}
+                      </div>
+                      <div class="fieldWrapper1" id="create_TG">
+                        <label for="{{ form.tag.id_for_label }}">タグを選択</label>
+                        {{ form.tag }}
+                        {{ form.tag.errors }}
+                      </div>
+                    </div>
+
+
+                    <div class="tab" id="create_base2">コメント記入ページ
+                      <div class="fieldWrapper1" id="create_C">
+                        {% if user.profile_image %}
+                        <li class="nav-item"><img src="{{ user.images.url }}" alt=""></li>
+                        {% endif %}
+                        <label for="{{ form.naiyou.id_for_label }}"><label>
+                        <p id="testaaaa"> {{ form.naiyou }}</p>
+                        {{ form.naiyou.errors }}
+                      </div>
+                      <div class="fieldWrapper1"></div>
+                    </div> 
+
+                    <!-- <div id="test_C"> -->
+                    <div class="create_btn">
+                        <div style="overflow:auto;" id="nextprevious">
+                            <div style="float:right;">
+                               <a type="button" id="prevBtn" onclick="nextPrev(-1)">戻る</a>
+                               <a type="button" id="nextBtn" onclick="nextPrev(1)">next</a> 
+                            </div>
+                        </div>
+                    </div>  
+                    <!-- </div> -->
+              </form>
+          </div>
       </div>
-  </div>
-</div>
+    </div>
+</body>
 {% endblock %}

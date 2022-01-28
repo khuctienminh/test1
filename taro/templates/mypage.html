@@ -8,55 +8,52 @@
     </div>
 </header>
 {% endblock %}
-{% block bodyue %}
+{% block contents %}
+<body id="listbody">
     <div class="my-div-style w-100">
       <div class="col-3">
           {% if object.image %}
-              <img src="{{ object.image.url }}" width="200" height="200"/>
+              <img src="{{ object.image.url }}" id="listicon">
           {% endif %}
       </div>
-      
-      <hr>
-
-      <div class="row">
+  
+      <div class="row" id="listname">
           <div class="col-9">
-              {{ object.name }}
+              {{ object.username }}
+          </div>
+      </div>
+      <div class="row" id="listageframe">
+          <div class="col-9" id="listage">
+              {{ object.age }} 代
           </div>
       </div>
 
-      <hr>
-
-
-      <div class="row">
-          <div class="col-9">
-              {{ object.age }} 年代
-          </div>
-      </div>
-
-      <hr>
-
-      <div class="row">
-          <div class="col-9">
-              紹介:{{ object.shokai }}
+      <div class="row" id="listshokaiframe">
+          <div class="col-9"id="listshokai">
+              {{ object.shokai }}
           </div>
       </div>
     </div>
-    <p>time:{{ time }}</p>
-    <p>total_likes:{{ usertotallikes }}</p>
-    <p>total_post:{{ totalpost }}</p>
-
-    {% for taro in post %}
-        <div class="post-preview">
-            <a href="{% url 'taro:taro_detail' taro.pk %}">
-                <h2 class="post-title">
-                {% if taro.photo1 %}
-                    <img src="{{ taro.photo1.url }}" width="150px" height="150px" />
-                {% endif %}
-                </h2>
-            </a>
-        </div>
-    {% empty %}
-        <p>Taroがありません</p>
-    {% endfor %}
-    
+    <p id="listiine"><br> ♡{{ object.likerecieve }}</p>
+    <p id="listtotal"><br>投稿数<br>{{ totalpost }}</p> 
+    <p id="listtime"><br>はじめて<br>{{ time }}日</p> 
+    <form action="" method="get">
+        <input type="submit"  value="投稿一覧" id="hokaichiran">                       
+    </form>
+    <div class="posthoka" id="posthoka">
+        {% for taro in post %}
+            <div class="post-preview">
+                <a href="{% url 'taro:taro_detail' taro.pk %}">
+                    <h2 class="post-title">
+                    {% if taro.photo1 %}
+                        <img src="{{ taro.photo1.url }}" width="150px" height="150px" />
+                    {% endif %}
+                    </h2>
+                </a>
+            </div>
+        {% empty %}
+            <p>投稿がありません</p>
+        {% endfor %}
+    </div>    
+</body>   
 {% endblock %}

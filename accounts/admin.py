@@ -7,8 +7,7 @@ fieldsets = (
             'User profile',
             {
                 'fields': (
-                    'first_name',
-                    'last_name',
+                    'name',
                     'email',
                     'password',
                     'date_joined',

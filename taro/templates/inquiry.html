@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+<!-- {%block title %}お問い合わせ|Private Diary{% endblock %} -->
+{% load static %}
+
+{% block active_inquiry %}active{% endblock %}
+
+{% block header%}
+<header class="masthead" src="{% static 'assets/img/touroku.png' %}">
+    <div class="container position-relative px-4 px-lg-5">
+    </div>
+</header>
+{% endblock %}
+{% block contents %}
+<!-- Main Content-->
+<body>
+<div class="inqbody">
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-11 col-lg-9 col-xl-9">
+                <div class="chinhthu">
+                    <h1>お問い合わせフォーム</h1>
+                    <h6>※下記フォームに必要事項を入力後、確認ボタンを押してください
+                    </h6>
+                </div>
+                <div class="btn-buttt">
+                  <a href="{% url 'taro:inquiry' %}" class="csw-btn-button" rel="nofollow" target="_self" >お問い合わせ</a>
+                  <a href="{% url 'taro:inquiry1' %}" class="csw-btn-button" rel="nofollow" target="_self" >新規タグ申請</a>
+                  <a href="{% url 'taro:inquiry2' %}" class="csw-btn-button" rel="nofollow" target="_self" >アカウント削除</a>
+                </div>
+                <div class="InquiryPage"> <!--変更点 01/21-->
+                    <form method="post">
+                        {% csrf_token %}
+        
+                        {{ form.non_field_errors }}
+        
+                        {% for field in form %}
+                          <div class="form-group row">
+                              <label for="{{field.id_for_label }}"
+                              class="col-sm-4 col-form-label">
+                            <strong>{{ field.label_tag }}
+                                <span style="color: red;">※必須</span> 
+                                </strong></label>
+                            <div class="col-sm-8">
+                                {% if field.id_for_label == 'id_message' or field.id_for_label == 'id_tag' or field.id_for_label == 'id_reason' %}
+                                <span id="test1111">{{ field }}</span>
+                                {{ field.errors}}
+                                {% else %}
+                                {{ field }}
+                                {{ field.errors }}
+                                {% endif %}
+                            </div>
+                          </div>
+                          
+                        {% endfor %}
+        
+                        <div class="offset-sm-4 col-sm-8">
+                            <button class="btn" id="inq_Sbtn" type="submit">送信</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+</body>
+{% endblock %}

@@ -190,15 +190,15 @@ DATABASES = {
         #'USER':os.environ.get('DB_USER'),
         #'PASSWORD':os.environ.get('DB_PASSWORD'),
         'USER':'postgres',
-        'PASSWORD':'2035145',
+        'PASSWORD':'minh0986121168',
         'HOST':'',
         'PORT':'',
     }
 }
 #khi up len mang thi phai them cai nay
 
-# import dj_database_url
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+import dj_database_url
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定
 SITE_ID = 1
@@ -234,3 +234,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 django_heroku.settings(locals())
+
+# メールサーバーへの接続設定
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'tdjangoc@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'test2021C'
+
+EMAIL_USE_TLS = True
+
+
+ACCOUNT_FORMS   = { "signup":"taro.forms.UserInfoCreateForm"}

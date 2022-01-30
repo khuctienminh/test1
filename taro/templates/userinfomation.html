@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block active_userinfo %}active{% endblock %}
+
+{% block header%}
+<header class="masthead" src="{% static 'assets/img/touroku.png' %}">
+    <div class="container position-relative px-4 px-lg-5">
+    </div>
+</header>
+{% endblock %}
+
+{% block contents %}
+<body id="listbody">
+    <div class="container">
+        <div class="my-div-style w-100">
+            <div class="col-3">
+                {% if object.image %}
+                    <img src="{{ object.image.url }}" width="200" height="200"id="usericon">
+                {% endif %}
+            </div>
+            
+            <hr>
+
+            <div class="row">
+                <div class="col-3">
+                    <strong>名前</strong>
+                </div>
+                <div class="col-9">
+                    {{ object.username }}
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-3">
+                    <strong>email</strong>
+                </div>
+                <div class="col-9">
+                    {{ object.email }}
+                </div>
+            </div>
+
+            <hr>
+
+
+            <div class="row">
+                <div class="col-3">
+                    <strong>年代</strong>
+                </div>
+                <div class="col-9">
+                    {{ object.age }}
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-3">
+                    <strong>性別</strong>
+                </div>
+                <div class="col-9">
+                    {{ object.sex }}
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col-3">
+                    <strong>紹介</strong>
+                </div>
+                <div class="col-9">
+                    {{ object.shokai }}
+                </div>
+            </div>
+            <hr>
+
+        　<p><a class="button secondaryAction" href="{% url 'account_reset_password' %}">パスワードを変更</a></p>
+            <a class="btn btn-success mt-5 mb-3" href="{% url 'taro:userinfocreate' object.pk %}">編集</a>
+            <a class="btn btn-danger mt-5 ml-2 mb-3" href="{% url 'taro:taro_list' %}">キャンセル</a>
+        </div>
+    </div>
+</body>
+{% endblock %}

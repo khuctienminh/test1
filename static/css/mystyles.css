@@ -51,6 +51,13 @@
 }
 
 /* signup_form 01/19 */
+.table_signup input{
+  width: 34vw;
+  height: 3.5vw;
+  font-size: 20px;
+  border: 1px solid;
+  border-radius:7px;
+}
 .formsigEmail{
   width: 34vw;
   height: 3.5vw;

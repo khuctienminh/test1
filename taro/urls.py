@@ -4,9 +4,7 @@ from . import views
 app_name = 'taro'
 
 urlpatterns = [
-<<<<<<< HEAD
     
-=======
     path('',views.IndexView.as_view(),name = 'index'),
     path('top',views.TopView.as_view(),name = 'top'),
     path('inquiry/form',views.InquiryView.as_view(),name = 'inquiry'),
@@ -23,6 +21,5 @@ urlpatterns = [
     path('taro-delete/<int:pk>/',views.TaroDeleteView.as_view(),name="taro_delete"),
     path('like/<int:pk>/',views.LikeView,name='like_taro'),
     path('mypage/<int:pk>/',views.MyPageView.as_view(),name = 'mypage'),
->>>>>>> 9bc32788f7e9b9947a3d7232c439832173a986ef
 
 ]
